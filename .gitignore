@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+backend/.env
+backend/leads.db
+backend/test_smoke.db
+backend/dbg*.db
+
+# Node / Next
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env*.local
+frontend/.env
+
+# OS / editor
+.DS_Store
+*.log
