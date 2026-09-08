@@ -29,7 +29,7 @@ Bonus: JWT authentication, per-user workspaces, pipeline overview dashboard, Doc
 
 - **Frontend:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4
 - **Backend:** Python 3.13, FastAPI, SQLAlchemy
-- **Database:** SQLite for local dev; PostgreSQL in production (switch via `DATABASE_URL`)
+- **Database:** SQLite for local dev; PostgreSQL in production (set `DATABASE_URL=postgresql+psycopg://...`; requires `psycopg[binary]`)
 - **AI:** OpenAI (structured JSON output). Falls back to a deterministic local engine when no API key is set.
 - **Data sources:** Simulated web / Crunchbase / LinkedIn adapters + real **Hunter.io** integration with automatic fallback.
 
