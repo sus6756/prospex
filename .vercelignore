@@ -1,0 +1,7 @@
+backend/.venv
+**/.venv
+backend/leads.db
+backend/.env
+frontend/node_modules
+frontend/.next
+frontend/src/**/*.test.*

@@ -122,7 +122,7 @@ export default function Home() {
             decision-makers, enriches their contact data, and ranks every lead so your
             sales team only chases the best-fit opportunities.
           </p>
-          <div className="mt-9 flex items-center justify-center gap-4">
+          <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link href="/register" className="btn-primary px-6 py-3 text-base shadow-lg shadow-brand-500/25">
               Start discovering leads
               <ArrowRight className="h-4 w-4" />

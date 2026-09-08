@@ -276,8 +276,9 @@ function LeadsPageInner() {
           </Link>
         </div>
       ) : (
+        <>
         <div className="card overflow-hidden p-0">
-          <div className="overflow-x-auto">
+          <div className="hidden overflow-x-auto lg:block">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-ink-200 bg-ink-50/50 text-left text-xs uppercase tracking-wide text-ink-500">
@@ -373,7 +374,108 @@ function LeadsPageInner() {
             </table>
           </div>
         </div>
+
+        <div className="space-y-3 lg:hidden">
+          {leads.map((lead) => (
+            <MobileLeadCard
+              key={lead.id}
+              lead={lead}
+              selected={selected.has(lead.id)}
+              onToggle={() => toggleSelect(lead.id)}
+              onStatus={(s) => handleRowStatus(lead.id, s)}
+            />
+          ))}
+        </div>
+        </>
       )}
+    </div>
+  );
+}
+
+function MobileLeadCard({
+  lead,
+  selected,
+  onToggle,
+  onStatus,
+}: {
+  lead: Lead;
+  selected: boolean;
+  onToggle: () => void;
+  onStatus: (status: string) => void;
+}) {
+  return (
+    <div
+      className={`card space-y-3 p-4 ${selected ? "bg-brand-50/30 ring-2 ring-brand-500/40" : ""}`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex min-w-0 items-start gap-3">
+          <input
+            type="checkbox"
+            className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-brand-600"
+            checked={selected}
+            onChange={onToggle}
+          />
+          <div className="min-w-0">
+            <Link
+              href={`/dashboard/lead/${lead.id}`}
+              className="font-semibold text-ink-900 hover:text-brand-600"
+            >
+              {lead.company?.name || "—"}
+            </Link>
+            {lead.company?.domain && (
+              <div className="truncate text-xs text-ink-400">{lead.company.domain}</div>
+            )}
+          </div>
+        </div>
+        <ScoreBadge score={lead.score} />
+      </div>
+
+      {(lead.company?.industry || lead.company?.country) && (
+        <div className="flex flex-wrap gap-1.5 pl-7">
+          {lead.company?.industry && <span className="chip-muted">{lead.company.industry}</span>}
+          {lead.company?.country && <span className="chip-muted">{lead.company.country}</span>}
+        </div>
+      )}
+
+      {lead.contacts.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 pl-7">
+          {lead.contacts.slice(0, 4).map((c, i) => (
+            <span
+              key={i}
+              className={c.is_decision_maker ? "chip-brand" : "chip-muted"}
+              title={c.title}
+            >
+              {c.full_name}
+            </span>
+          ))}
+          {lead.contacts.length > 4 && (
+            <span className="chip-muted text-ink-400">+{lead.contacts.length - 4}</span>
+          )}
+        </div>
+      )}
+
+      <div className="flex items-center justify-between gap-3 border-t border-ink-100 pt-3">
+        <select
+          value={lead.status}
+          onChange={(e) => onStatus(e.target.value)}
+          className={`cursor-pointer rounded-lg border-0 px-2 py-1 text-xs font-bold capitalize focus:outline-none focus:ring-2 focus:ring-brand-500/30 ${
+            lead.status === "qualified"
+              ? "bg-emerald-50 text-emerald-700"
+              : lead.status === "contacted"
+                ? "bg-sky-50 text-sky-700"
+                : lead.status === "unqualified"
+                  ? "bg-red-50 text-red-700"
+                  : "bg-ink-100 text-ink-600"
+          }`}
+        >
+          {STATUSES.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+        <span className="chip-muted">{lead.source}</span>
+      </div>
     </div>
   );
 }

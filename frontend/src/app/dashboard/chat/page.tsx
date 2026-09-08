@@ -112,7 +112,7 @@ export default function ChatPage() {
       )}
 
       {/* Chat window */}
-      <div className="card flex h-[520px] flex-col overflow-hidden p-0">
+      <div className="card flex h-[60vh] min-h-[380px] flex-col overflow-hidden p-0 sm:h-[520px]">
         <div className="flex-1 space-y-4 overflow-y-auto p-5">
           {messages.length === 0 && !loading && (
             <div className="flex h-full flex-col items-center justify-center text-center">

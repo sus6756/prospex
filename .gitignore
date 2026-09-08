@@ -17,3 +17,4 @@ frontend/.env
 # OS / editor
 .DS_Store
 *.log
+.vercel
