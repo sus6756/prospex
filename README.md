@@ -9,6 +9,22 @@ Describe your Ideal Customer Profile (ICP) in plain English → AI parses it int
 
 ---
 
+## Screenshots
+
+![Landing page](screenshot-1.png)
+
+![ICP with parsed criteria](screenshot-2.png)
+
+![Lead discovery](screenshot-3.png)
+
+![Leads dashboard](screenshot-4.png)
+
+![Mobile view](screenshot-5.png)
+
+> ▶️ [Watch the app demo recording](demo-recording.mp4)
+
+---
+
 ## Features
 
 | # | Feature | Status |
