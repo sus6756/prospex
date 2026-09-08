@@ -11,6 +11,22 @@ export class ApiError extends Error {
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const TIMEOUT_MS = 90_000;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      return await attemptRequest<T>(path, options, TIMEOUT_MS);
+    } catch (err) {
+      const retriable =
+        err instanceof TypeError ||
+        (err instanceof DOMException && (err.name === "AbortError" || err.name === "TimeoutError"));
+      if (attempt === 0 && retriable) continue;
+      throw err;
+    }
+  }
+  throw new Error("Request failed");
+}
+
+async function attemptRequest<T>(path: string, options: RequestInit, timeoutMs: number): Promise<T> {
   const token = getToken();
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -18,7 +34,11 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   };
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  const res = await fetch(`${API_BASE}${path}`, {
+    ...options,
+    headers,
+    signal: AbortSignal.timeout(timeoutMs),
+  });
   if (!res.ok) {
     let detail = "Request failed";
     try {
