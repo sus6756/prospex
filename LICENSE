@@ -1,21 +1,50 @@
-MIT License
+PROSPEX PROPRIETARY SOFTWARE LICENSE
 
-Copyright (c) 2026 R Sashank Adithiyaa
+Copyright (c) 2026 R Sashank Adithiyaa (GitHub: sus6756)
+All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. OWNERSHIP
+This software, including all source code, documentation, design assets, and
+related materials (the "Software"), is the sole and exclusive property of
+R Sashank Adithiyaa (GitHub: sus6756). The Software and all associated
+intellectual property rights remain vested in the owner.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+2. NO LICENSE GRANTED
+This is NOT open-source. No permission or license is granted to any person to
+use, copy, modify, merge, publish, distribute, sublicense, sell, sublicense,
+reverse engineer, decompile, or create derivative works from the Software,
+in whole or in part, without the prior express written consent of the owner.
 
+3. PERMITTED USE
+The Software may only be viewed for personal, non-commercial evaluation
+purposes on the public repository. Any other use, including but not limited
+to local deployment, commercial use, redistribution, or integration into
+other products, requires written approval from the owner.
+
+4. REQUESTS / CONTACT
+All requests for licensing, collaboration, or permission to use the Software
+must be sent to:
+
+    R Sashank Adithiyaa
+    Email: sashankmidhun@gmail.com
+    GitHub: sus6756
+
+5. VIOLATIONS
+Any unauthorized use, copying, modification, distribution, or reproduction of
+the Software, in whole or in part, constitutes an infringement of the owner's
+intellectual property rights. In the event of any such violation, the
+infringer shall be liable to the owner for all damages, including but not
+limited to statutory damages, lost profits, and reasonable legal fees, and the
+owner reserves the right to pursue all civil and criminal remedies available
+under applicable law.
+
+6. WARRANTY AND LIABILITY
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+OWNER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+This license is governed by applicable local and international copyright law.
+Any disputes arising from this license shall be subject to such law.

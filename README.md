@@ -166,4 +166,4 @@ Runs 37 checks covering auth, ICP parsing, discovery, enrichment, scoring, dedup
 
 ## License
 
-MIT — use freely for prototyping and production experimentation.
+Proprietary — all rights reserved by R Sashank Adithiyaa (GitHub: sus6756). Contact sashankmidhun@gmail.com for licensing requests. See [LICENSE](LICENSE).
