@@ -1,5 +1,8 @@
 # Prospex — AI-Powered Lead Discovery & Qualification Platform
 
+> ### 🚀 Live demo
+> **Click to open the app: https://prospex-rho.vercel.app** — sign up and try it now.
+
 A production-ready prototype that lets businesses **discover, qualify, and organize high-quality B2B leads** using AI.
 
 Describe your Ideal Customer Profile (ICP) in plain English → AI parses it into structured criteria → the platform discovers matching companies across multiple data sources, enriches decision-maker contact information, scores every lead 0–100 with explanations, deduplicates automatically, and lets you search, filter, and export the results.
