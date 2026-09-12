@@ -2,7 +2,8 @@
 
 > ### 🚀 Live demo
 > **Click to open the app: https://prospex-rho.vercel.app** — sign up and try it now.
-> For screen recording pls go to --> https://drive.google.com/drive/folders/1_xI0WTffN9wWQqVOrhIcPcgFwVYY5ITL?usp=sharing
+
+For screen recording pls go to --> https://drive.google.com/drive/folders/1_xI0WTffN9wWQqVOrhIcPcgFwVYY5ITL?usp=sharing
 
 A production-ready prototype that lets businesses **discover, qualify, and organize high-quality B2B leads** using AI.
 
