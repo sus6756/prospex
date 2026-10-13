@@ -1,15 +1,14 @@
-import csv
 import io
 import json
 from typing import Optional
 
-from fastapi import APIRouter, Depends, Query
+import pandas as pd
+from fastapi import APIRouter, Depends, Query, Response
 from sqlalchemy.orm import Session, joinedload
 
 from database import get_db
 from models import Lead, User
 from routers.deps import get_current_user
-from utils.helpers import loads_json
 
 router = APIRouter(prefix="/api/export", tags=["export"])
 
@@ -70,6 +69,10 @@ def _flatten_leads(leads: list[Lead]) -> list[dict]:
     return rows
 
 
+def _leads_dataframe(rows: list[dict]) -> pd.DataFrame:
+    return pd.DataFrame(rows, columns=CORE_FIELDS)
+
+
 def _build_query(
     db: Session,
     user_id: int,
@@ -103,6 +106,13 @@ def _build_query(
     return query
 
 
+def _select_fields(fields: Optional[str]) -> list[str]:
+    if not fields:
+        return CORE_FIELDS
+    selected = [f.strip() for f in fields.split(",") if f.strip() in CORE_FIELDS]
+    return selected or CORE_FIELDS
+
+
 @router.get("/csv")
 def export_csv(
     icp_id: Optional[int] = None,
@@ -116,22 +126,35 @@ def export_csv(
 ):
     query = _build_query(db, current_user.id, icp_id, q, min_score, status, source)
     leads = query.all()
-    rows = _flatten_leads(leads)
+    df = _leads_dataframe(_flatten_leads(leads))[_select_fields(fields)]
 
-    selected_fields = CORE_FIELDS
-    if fields:
-        selected_fields = [f.strip() for f in fields.split(",") if f.strip() in CORE_FIELDS]
-        if not selected_fields:
-            selected_fields = CORE_FIELDS
+    return _text_response(df.to_csv(index=False), "leads.csv", "text/csv")
 
-    buf = io.StringIO()
-    writer = csv.DictWriter(buf, fieldnames=selected_fields, extrasaction="ignore")
-    writer.writeheader()
-    for row in rows:
-        writer.writerow(row)
 
-    filename = "leads.csv"
-    return _text_response(buf.getvalue(), filename, "text/csv")
+@router.get("/xlsx")
+def export_xlsx(
+    icp_id: Optional[int] = None,
+    q: Optional[str] = None,
+    min_score: Optional[float] = Query(default=None, ge=0, le=100),
+    status: Optional[str] = None,
+    source: Optional[str] = None,
+    fields: Optional[str] = None,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    query = _build_query(db, current_user.id, icp_id, q, min_score, status, source)
+    leads = query.all()
+    df = _leads_dataframe(_flatten_leads(leads))[_select_fields(fields)]
+
+    buf = io.BytesIO()
+    with pd.ExcelWriter(buf, engine="openpyxl") as writer:
+        df.to_excel(writer, index=False, sheet_name="Leads")
+
+    return Response(
+        content=buf.getvalue(),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": 'attachment; filename="leads.xlsx"'},
+    )
 
 
 @router.get("/json")
@@ -152,8 +175,6 @@ def export_json(
 
 
 def _text_response(content: str, filename: str, media_type: str):
-    from fastapi import Response
-
     headers = {
         "Content-Disposition": f'attachment; filename="{filename}"',
     }
