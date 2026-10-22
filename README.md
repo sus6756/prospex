@@ -185,6 +185,27 @@ Runs 37 checks covering auth, ICP parsing, discovery, enrichment, scoring, dedup
 
 ---
 
+## Lead analytics report (pandas + MySQL)
+
+`backend/scripts/lead_analytics_mysql.py` reads leads, companies, contacts, and ICPs straight
+from the MySQL database with SQLAlchemy, cleans them in pandas, and writes funnel / source /
+industry / score-band / weekly / coverage reports as CSV (plus an XLSX workbook).
+
+```bash
+cd backend
+pip install pandas sqlalchemy pymysql openpyxl
+export MYSQL_URL="mysql+pymysql://prospex:prospex@127.0.0.1:3306/prospex?charset=utf8mb4"
+
+python scripts/lead_analytics_mysql.py                 # writes ./reports
+python scripts/lead_analytics_mysql.py --demo          # sample data, no database
+python scripts/lead_analytics_mysql.py --no-excel      # CSV only
+```
+
+A plain-text copy of the same program lives at
+`backend/scripts/lead_analytics_mysql.txt` for quick copy/paste.
+
+---
+
 ## License
 
 Proprietary — all rights reserved by R Sashank Adithiyaa (GitHub: sus6756). Contact sashankmidhun@gmail.com for licensing requests. See [LICENSE](LICENSE).

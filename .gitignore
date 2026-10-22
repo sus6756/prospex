@@ -6,6 +6,7 @@ backend/.env
 backend/leads.db
 backend/test_smoke.db
 backend/dbg*.db
+backend/reports/
 
 # Node / Next
 frontend/node_modules/
