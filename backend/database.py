@@ -22,6 +22,10 @@ def _normalize_url(url: str) -> str:
         return "postgresql+psycopg://" + url[len("postgres://") :]
     if url.startswith("postgresql://"):
         return "postgresql+psycopg://" + url[len("postgresql://") :]
+    if url.startswith("postgresql+psycopg2://"):
+        return "postgresql+psycopg://" + url[len("postgresql+psycopg2://") :]
+    if url.startswith("mysql://"):
+        return "mysql+pymysql://" + url[len("mysql://") :]
     return url
 
 
@@ -37,12 +41,29 @@ def _engine_options(url: str) -> dict:
     return options
 
 
-DATABASE_URL = _normalize_url(settings.DATABASE_URL)
-engine = create_engine(DATABASE_URL, **_engine_options(DATABASE_URL))
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+DATABASE_URL = _normalize_url((settings.DATABASE_URL or "").strip())
+if not DATABASE_URL:
+    DATABASE_URL = "sqlite:///./leads.db"
 
 # "primary" or "fallback" — surfaced by /api/health so this is never silent.
 _db_mode = "primary"
+
+
+def _make_engine(url: str):
+    return create_engine(url, **_engine_options(url))
+
+
+try:
+    engine = _make_engine(DATABASE_URL)
+except Exception as exc:  # malformed URL or missing driver
+    logger.error("Invalid DATABASE_URL (%s); using SQLite instead", exc)
+    if not settings.ALLOW_SQLITE_FALLBACK:
+        raise
+    DATABASE_URL = _normalize_url(settings.SQLITE_FALLBACK_URL)
+    engine = _make_engine(DATABASE_URL)
+    _db_mode = "fallback"
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 def _safe_target(url: str) -> str:
@@ -64,7 +85,7 @@ def _switch_to_fallback() -> None:
         engine.dispose()
     except Exception:
         pass
-    engine = create_engine(fallback_url, **_engine_options(fallback_url))
+    engine = _make_engine(fallback_url)
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     Base.metadata.create_all(bind=engine)
     _db_mode = "fallback"
