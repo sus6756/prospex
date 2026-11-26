@@ -1,8 +1,9 @@
+from __future__ import annotations
+
 import io
 import json
 from typing import Optional
 
-import pandas as pd
 from fastapi import APIRouter, Depends, Query, Response
 from sqlalchemy.orm import Session, joinedload
 
@@ -70,6 +71,10 @@ def _flatten_leads(leads: list[Lead]) -> list[dict]:
 
 
 def _leads_dataframe(rows: list[dict]) -> pd.DataFrame:
+    # Imported lazily so the API can boot on a small Render instance without
+    # paying pandas' startup cost for users who never export.
+    import pandas as pd
+
     return pd.DataFrame(rows, columns=CORE_FIELDS)
 
 
@@ -145,6 +150,8 @@ def export_xlsx(
     query = _build_query(db, current_user.id, icp_id, q, min_score, status, source)
     leads = query.all()
     df = _leads_dataframe(_flatten_leads(leads))[_select_fields(fields)]
+
+    import pandas as pd
 
     buf = io.BytesIO()
     with pd.ExcelWriter(buf, engine="openpyxl") as writer:

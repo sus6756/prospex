@@ -1,12 +1,16 @@
+import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from config import settings
-from database import Base, engine
+from database import database_status, init_db
 from models import Company, Contact, ICP, Lead, User  # noqa: F401
 from routers import auth, chat, icp, leads, discovery, export
 
-Base.metadata.create_all(bind=engine)
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
+init_db()
 
 app = FastAPI(
     title="Prospex — Lead Discovery & Qualification Platform",
@@ -17,6 +21,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
+    allow_origin_regex=settings.CORS_ORIGIN_REGEX,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -37,4 +42,9 @@ def root():
 
 @app.get("/api/health")
 def health():
-    return {"status": "healthy", "env": settings.ENV}
+    db = database_status()
+    return {
+        "status": "healthy" if db["connected"] else "degraded",
+        "env": settings.ENV,
+        "database": db,
+    }
